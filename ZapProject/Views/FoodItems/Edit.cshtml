@@ -1,0 +1,63 @@
+﻿@model EditItemViewModel
+
+<h1>Изменение товара</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" value="@Model.Id" name="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Название товара</label>
+                <input asp-for="Name" class="form-control" placeholder="Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Описание товара</label>
+                <input asp-for="Description" class="form-control" placeholder="Description" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label">Цена</label>
+                <input asp-for="Price" class="form-control" placeholder="Price" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Weight" class="control-label">Вес товара</label>
+                <input asp-for="Weight" class="form-control" placeholder="Weight" />
+                <span asp-validation-for="Weight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Vendor" class="control-label">Производитель</label>
+                <input asp-for="Vendor" class="form-control" placeholder="Vendor" />
+                <span asp-validation-for="Vendor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ingredients" class="control-label">Ингредиенты</label>
+                <input asp-for="Ingredients" class="form-control" placeholder="Ingredients" />
+                <span asp-validation-for="Ingredients" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label">Категория</label>
+                <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-control">
+                    <option selected="selected" value="">--Выберите категорию--</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    В наличии
+                    <input class="form-check-input" asp-for="Avaliable" placeholder="В наличии"/>
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Img" class="control-label">URL картинки товара</label>
+                <input asp-for="Img" class="form-control" placeholder="Img" />
+                <span asp-validation-for="Img" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

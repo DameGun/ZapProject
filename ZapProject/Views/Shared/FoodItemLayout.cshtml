@@ -1,0 +1,18 @@
+﻿<div class="col-md-3">
+    <div class="card mb-4">
+        <div class="product-thumb">
+            <a asp-area="" asp-controller="FoodItems" asp-action="Details" asp-route-id="@Model.Id"><img src="@Model.Img" /></a>
+        </div>
+        <div class="card-body">
+            <p class="card-text">@Model.Name @String.Format($"{Model.Weight}г")</p>
+            <p class="card-text"><b>@String.Format($"{Model.Price} руб.")</b></p>
+            <p class="card-text">@Model.Category.ToString()</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">В корзину</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary"><a class="link-dark text-decoration-none" asp-area="" asp-controller="FoodItems" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
