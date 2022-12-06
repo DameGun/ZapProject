@@ -50,7 +50,6 @@ namespace ZapProject.Controllers
             return View(foodItem);
         }
 
-        [HttpGet]
         public IActionResult Create()
         {
             ViewBag.Categories = new SelectList(_categories.Category, "Id", "Name");
@@ -135,6 +134,29 @@ namespace ZapProject.Controllers
                 return RedirectToAction("Index");
             }
             else return View(itemVM);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            ViewBag.Categories = new SelectList(_categories.Category, "Id", "Name");
+            var foodItem = await _itemsRepository.GetByIdAsync(id);
+            if (foodItem == null) return View("Error");
+            return View(foodItem);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteItem(int id)
+        {
+            ViewBag.Categories = new SelectList(_categories.Category, "Id", "Name");
+            var foodItem = await _itemsRepository.GetByIdAsync(id);
+
+            if (foodItem == null)
+            {
+                return View("Error");
+            }
+
+            _itemsRepository.Delete(foodItem);
+            return RedirectToAction("Index");
         }
     }
 }
