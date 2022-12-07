@@ -25,14 +25,6 @@
 						</li>
 						@if (User.Identity.IsAuthenticated)
 						{
-							if (User.IsInRole("admin"))
-							{
-								<li class="nav-item">
-									<form asp-area="" asp-controller="FoodItem" asp-action="Create">
-										<button class="btn btn-outline-primary">Добавить товар</button>
-									</form>
-								</li>
-							}
 							<li class="nav-item">
 								<a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">Личный кабинет</a>
 							</li>

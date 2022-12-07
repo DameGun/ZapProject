@@ -11,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IFoodItems, FoodItemsRepository>();
+builder.Services.AddScoped<IFavItems, FavouriteItemsRepository>();
+builder.Services.AddScoped<IDashboardService, DashboardRepository>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -21,6 +23,7 @@ builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
 var app = builder.Build();
+
 
 //if (args.Length == 1 && args[0].ToLower() == "seeddata")
 //{
@@ -47,9 +50,9 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}");
 
-app.MapControllerRoute(
-    name: "categoryFilter",
-    pattern: "{controller}/{category?}",
-    defaults: new { controller = "FoodItems", action = "Index" });
+//app.MapControllerRoute(
+//    name: "categoryFilter",
+//    pattern: "{controller}/{category?}",
+//    defaults: new { controller = "FoodItems", action = "Index" });
 
 app.Run();

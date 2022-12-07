@@ -18,5 +18,7 @@ namespace ZapProject.Data
         public DbSet<Category> Category { get; set; }
 
         public DbSet<Address> Addresses { get; set; } 
+
+        public DbSet<FavouriteItem> FavoriteItems { get; set; }
     }
 }

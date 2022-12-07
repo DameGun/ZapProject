@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+
+@model ZapProject.ViewModels.DashboardViewModel
+
+<div class="album py-5 bg-light">
+	<div class="container">
+		@if (User.IsInRole("admin"))
+		{
+			<h2 class="display-4 fw-normal">Редактировать товары</h2>
+			<form method="get" asp-area="" asp-controller="FoodItems" asp-action="Create">
+				<button class="btn btn-outline-primary">Добавить товар</button>
+			</form>
+		}
+		else
+		{
+			<h2 class="display-4 fw-normal">Избранные товары</h2>
+		}
+
+		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+			@foreach (var item in Model.UserItems)
+			{
+				<partial name="FoodItemLayout" model="item" />
+			}
+		</div>
+	</div>
+</div>

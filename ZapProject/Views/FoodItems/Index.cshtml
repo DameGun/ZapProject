@@ -1,16 +1,16 @@
 ﻿<div class="album py-5 bg-light">
-    <div class="row">
-        <div class="col-md-2">
-        </div>
+	<div class="row">
+		<div class="col-md-2">
+		</div>
 
-        <div class="col-md-10">
-            <div class="row">
-                @foreach (FoodItem item in Model.AllItems)
-                {
-                    @Html.Partial("FoodItemLayout", item)
-                }
-            </div>
-        </div>
-    </div>
-    
+		<div class="col-md-10">
+			<div class="row">
+				@foreach (var item in Model.AllItems)
+				{
+					<partial name="FoodItemLayout" model="item" />
+				}
+			</div>
+		</div>
+	</div>
+
 </div>

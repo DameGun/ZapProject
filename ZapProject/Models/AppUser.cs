@@ -8,6 +8,5 @@ namespace ZapProject.Models
         [ForeignKey("Address")]
         public int? AddressId { get; set; }
         public Address? Address { get; set; }
-        public ICollection<FoodItem> Favourites { get; set; }
     }
 }

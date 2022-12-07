@@ -14,12 +14,15 @@ namespace ZapProject.Controllers
     {
         private readonly IFoodItems _itemsRepository;
         private readonly ApplicationDbContext _categories;
-        public FoodItemsController(IFoodItems itemsRepository, ApplicationDbContext categories) {
+        private readonly IFavItems _favItems;
+        public FoodItemsController(IFoodItems itemsRepository, ApplicationDbContext categories, IFavItems favItems) {
             _itemsRepository = itemsRepository;
             _categories = categories;
+            _favItems = favItems;
         }
 
-        public async Task<IActionResult> Index(string? category)
+		[HttpGet]
+		public async Task<IActionResult> Index(string? category)
         {
             string currCategory = string.Empty;
             IEnumerable<FoodItem> items;
@@ -44,12 +47,14 @@ namespace ZapProject.Controllers
             return View(itemObj);
         }
 
-        public async Task<IActionResult> Details(int id)
+		[HttpGet]
+		public async Task<IActionResult> Details(int id)
         {
             FoodItem foodItem = await _itemsRepository.GetByIdAsync(id);
             return View(foodItem);
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
             ViewBag.Categories = new SelectList(_categories.Category, "Id", "Name");
@@ -80,7 +85,8 @@ namespace ZapProject.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Edit(int id)
+		[HttpGet]
+		public async Task<IActionResult> Edit(int id)
         {
             var item = await _itemsRepository.GetByIdAsync(id);
             if (item == null) return View("Error");
@@ -136,7 +142,8 @@ namespace ZapProject.Controllers
             else return View(itemVM);
         }
 
-        public async Task<IActionResult> Delete(int id)
+		[HttpGet]
+		public async Task<IActionResult> Delete(int id)
         {
             ViewBag.Categories = new SelectList(_categories.Category, "Id", "Name");
             var foodItem = await _itemsRepository.GetByIdAsync(id);
@@ -157,6 +164,13 @@ namespace ZapProject.Controllers
 
             _itemsRepository.Delete(foodItem);
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToFavourites(int id)
+        {
+            _favItems.Add(id);
+            return RedirectToAction("Index", "FoodItems");
         }
     }
 }
