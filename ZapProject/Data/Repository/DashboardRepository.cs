@@ -9,17 +9,18 @@ namespace ZapProject.Data.Repository
     {
         private readonly ApplicationDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public DashboardRepository(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        private readonly IFavItems _favItemsRepository;
+        public DashboardRepository(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, IFavItems favItemsRepository)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
+            _favItemsRepository = favItemsRepository;
         }
         public async Task<List<FoodItem>> GetAllItems() => await _context.FoodItems.Include(i => i.Category).ToListAsync();
 
         public async Task<List<FoodItem>> GetUserItems()
         {
-            var curUser = _httpContextAccessor.HttpContext.User.GetUserId();
-            var items = _context.FavoriteItems.Include(i => i.Item).Where(i => i.UserId == curUser).Select(i => i.Item).ToList();
+            var items = await _favItemsRepository.GetItems();
             return items.ToList();
         }
     }

@@ -1,33 +1,49 @@
-﻿<div class="container text-center">
+﻿@model DetailsViewModel
+
+<div class="container text-center">
 	<div class="row text-start mb-5">
-		<h3 class="my-3">@Model.Name</h3>
+		<h3 class="my-3">@Model.Item.Name</h3>
 		<p></p>
 	</div>
 	<div class="row">
 		<div class="col-md-8">
 			<div class="detail-thumb">
-				<img src="@Model.Img" />
+				<img src="@Model.Item.Img" />
 			</div>
 		</div>
 		<div class="col-md-4">
-			<div class="detail-pricetag shadow">
-				<h5 class="my-3">@String.Format($"Цена: {Model.Price} руб.")</h5>
-				@if (Model.Avaliable)
+			<div class="detail-pricetag shadow text-start">
+				<div class="mb-2">
+					<h5 class="my-3">@String.Format($"Цена: {Model.Item.Price} руб.")</h5>
+					@if (Model.Item.Avaliable)
+					{
+						<p class="text-success">&#10003; В наличии</p>
+						<button type="button" class="btn btn-sm btn-outline-secondary">Добавить в корзину</button>
+					}
+					else
+					{
+						<p class="text-danger">Нет в наличии</p>
+					}
+				</div>
+
+
+				@if (User.IsInRole("user"))
 				{
-					<p class="text-success">&#10003; В наличии</p>
-					<button type="button" class="btn btn-sm btn-outline-secondary">Добавить в корзину</button>
+					@if (!Model.IsFavourite)
+					{
+						<form method="post" asp-area="" asp-controller="FoodItems" asp-action="AddToFavourites" asp-route-id="@Model.Item.Id">
+							<button class="btn btn-sm btn-outline-danger">Добавить в избранное</button>
+						</form>
+					}
+					else
+					{
+						<form method="post" asp-area="" asp-controller="FoodItems" asp-action="RemoveFromFavourites" asp-route-id="@Model.Item.Id">
+							<button class="btn btn-sm btn-danger">Убрать из избранного</button>
+						</form>
+					}
 				}
-				else
-				{
-					<p class="text-danger">Нет в наличии</p>
-				}
+
 			</div>
-			@if (User.IsInRole("user"))
-			{
-				<form class="m" method="post" asp-area="" asp-controller="FoodItems" asp-action="AddToFavourites" asp-route-id="@Model.Id">
-					<button class="btn btn-sm btn-outline-danger">Добавить</button>
-				</form>
-			}
 		</div>
 	</div>
 </div>

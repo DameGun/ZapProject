@@ -87,6 +87,14 @@ namespace ZapProject.Controllers
             {
                 await _userManager.AddToRoleAsync(newUser, UserRoles.User);
             }
+            else
+            {
+                foreach (var error in newUserResponse.Errors)
+                {
+                    TempData["Error"] = error.Description;
+                }
+                return View(registerVM);
+            }
 
             return RedirectToAction("Index", "Home");
         }

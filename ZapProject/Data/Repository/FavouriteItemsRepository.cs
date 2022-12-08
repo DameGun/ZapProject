@@ -1,4 +1,5 @@
-﻿using ZapProject.Data.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using ZapProject.Data.Interfaces;
 using ZapProject.Models;
 
 namespace ZapProject.Data.Repository
@@ -16,24 +17,36 @@ namespace ZapProject.Data.Repository
 			_itemsRepository = itemsRepository;
 		}
 
+		public async Task<List<FoodItem>> GetItems()
+		{
+			var userSession = _httpContextAccessor.HttpContext.User.GetUserId();
+			var items =  _context.FavoriteItems.Include(i => i.Item).Where(i => i.UserId == userSession).Select(i => i.Item).ToList();
+			return items;
+		}
+
+		public async Task<FavouriteItem> GetItemById(int id)
+		{
+			var userSession = _httpContextAccessor.HttpContext.User.GetUserId();
+			var item = _context.FavoriteItems.FirstOrDefault(i => i.UserId == userSession && i.ItemId == id);
+			return item;
+		}
+
 		public bool Add(int id)
 		{
 			var userSession = _httpContextAccessor.HttpContext.User.GetUserId();
-			var curUser = _context.Users.FirstOrDefault(u => u.Id == userSession);
 			var item = _itemsRepository.GetByIdAsync(id);
-			if (curUser == null && item == null) return false;
 			var fav = new FavouriteItem
 			{
-				UserId = curUser.Id,
+				UserId = userSession,
 				ItemId = id
 			};
 			_context.Add(fav);
 			return Save();
 		}
 
-		public bool Delete(FavouriteItem item)
+		public bool Delete(FavouriteItem favItem)
 		{
-			_context.Remove(item);
+			_context.Remove(favItem);
 			return Save();
 		}
 

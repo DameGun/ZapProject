@@ -51,7 +51,19 @@ namespace ZapProject.Controllers
 		public async Task<IActionResult> Details(int id)
         {
             FoodItem foodItem = await _itemsRepository.GetByIdAsync(id);
-            return View(foodItem);
+			bool favCheck = false;
+			if (User.Identity.IsAuthenticated)
+            {
+				var favItem = await _favItems.GetItemById(id);
+				if (favItem != null) favCheck = true;
+			}
+
+            var detailsVM = new DetailsViewModel
+            {
+                Item = foodItem,
+                IsFavourite = favCheck,
+            };
+            return View(detailsVM);
         }
 
         [HttpGet]
@@ -170,7 +182,15 @@ namespace ZapProject.Controllers
         public async Task<IActionResult> AddToFavourites(int id)
         {
             _favItems.Add(id);
-            return RedirectToAction("Index", "FoodItems");
-        }
+			return RedirectToAction("Details", new { id });
+		}
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromFavourites(int id)
+        {
+            var favItem = await _favItems.GetItemById(id);
+            _favItems.Delete(favItem);
+            return RedirectToAction("Details", new { id }); 
+		}
     }
 }
