@@ -10,9 +10,9 @@ namespace ZapProject.Models
 
         public string Description { get; set; }
 
-        public uint Price { get; set; } 
+        public double Price { get; set; } 
 
-        public uint Weight { get; set; }
+        public double Weight { get; set; }
 
         public string Vendor { get; set; }
 

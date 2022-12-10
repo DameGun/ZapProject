@@ -3,6 +3,12 @@
 
 @model ZapProject.ViewModels.DashboardViewModel
 
+@{
+	if(User.IsInRole("admin")) ViewData["Title"] = "Админ-панель";
+	else ViewData["Title"] = "Избранные товары";
+}
+
+
 <div class="album py-5 bg-light">
 	<div class="container">
 		@if (User.IsInRole("admin"))

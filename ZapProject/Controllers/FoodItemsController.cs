@@ -63,6 +63,8 @@ namespace ZapProject.Controllers
                 Item = foodItem,
                 IsFavourite = favCheck,
             };
+
+            ViewData["Title"] = foodItem.Name;
             return View(detailsVM);
         }
 
@@ -74,7 +76,7 @@ namespace ZapProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateItemViewModel foodItem)
+        public IActionResult Create(CreateItemViewModel foodItem)
         {
             if (ModelState.IsValid)
             {
@@ -179,7 +181,7 @@ namespace ZapProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToFavourites(int id)
+        public IActionResult AddToFavourites(int id)
         {
             _favItems.Add(id);
 			return RedirectToAction("Details", new { id });
