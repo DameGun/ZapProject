@@ -1,0 +1,65 @@
+﻿@model List<Order>
+
+@{
+	ViewData["Title"] = "Заказы";
+}
+
+<div class="row py-4">
+	<div class="col-md-8 offset-2">
+		@if (User.IsInRole("user"))
+		{
+			<p>
+				<h4>Список ваших заказов</h4>
+			</p>
+		}
+		else
+		{
+			<p>
+				<h4>Список заказов пользователей</h4>
+			</p>
+		}
+
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Номер заказа</th>
+					<th>Товары</th>
+					<th>Итого</th>
+					@if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+					{
+						<th>Пользователь</th>
+					}
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var order in Model)
+				{
+					<tr>
+						<td class="align-middle">@order.Id</td>
+						<td class="align-middle">
+							<ul style="list-style-type:none">
+								@foreach (var item in order.OrderItems)
+								{
+									<li>
+										<div class="alert alert-info" role="alert">
+											<span class="badge bg-success">@item.Amount</span> [@String.Format("{0} руб.", item.Price)] - @item.Item.Name
+										</div>
+									</li>
+								}
+							</ul>
+						</td>
+						<td class="align-middle">
+							@String.Format("{0} руб.", order.OrderItems.Select(m => m.Item.Price * m.Amount).Sum().ToString())
+						</td>
+						@if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+						{
+							<td class="align-middle"> @order.User.UserName </td>
+						}
+					</tr>
+				}
+			</tbody>
+		</table>
+
+	</div>
+</div>

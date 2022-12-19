@@ -6,5 +6,11 @@ namespace ZapProject.Data.Interfaces
     {
         Task<List<FoodItem>> GetAllItems();
         Task<List<FoodItem>> GetUserItems();
+        Task<AppUser?> GetUserById(string id);
+        Task<AppUser> GetByIdNoTracking(string id);
+        bool Save();
+        bool Update(AppUser user);
+        bool Update(Address address);
+        int AddNewUserAddress(Address address);
     }
 }

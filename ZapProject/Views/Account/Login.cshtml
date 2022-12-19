@@ -32,9 +32,13 @@
                         <input asp-for="Password" class="form-control" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
+                    <div class="my-3">
+                        <a asp-action="Register">Ещё не зарегистированы? Создайте аккаунт прямо сейчас.</a>
+                    </div>
+                    
                     <div class="form-group">
                         <input class="btn btn-outline-success float right" type="submit" value="Войти" />
-                        <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Отмена</a>
+                        <a class="btn btn-outline-danger" asp-controller="Home" asp-action="Index">Отмена</a>
                     </div>
                 </form>
             </div>

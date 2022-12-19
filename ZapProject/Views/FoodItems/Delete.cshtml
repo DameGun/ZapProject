@@ -1,9 +1,13 @@
 ﻿@using ZapProject.Data.Enum
 @model FoodItem
 
-<h1>Вы уверены что хотите удалить этот товар?</h1>
+@{
+    ViewData["Title"] = "Удаление товара";
+}
 
-<div class="form-group">
+
+<div class="form-group py-4">
+    <h1>Вы уверены что хотите удалить этот товар?</h1>
     <form action="Delete" method="post">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Подтвердить" class="btn btn-danger float-right mt-3" />

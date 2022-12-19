@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using ZapProject.Data.Interfaces;
 using ZapProject.Models;
 
@@ -17,24 +18,20 @@ namespace ZapProject.Data.Repository
 			_itemsRepository = itemsRepository;
 		}
 
-		public async Task<List<FoodItem>> GetItems()
-		{
-			var userSession = _httpContextAccessor.HttpContext.User.GetUserId();
-			var items =  _context.FavoriteItems.Include(i => i.Item).Where(i => i.UserId == userSession).Select(i => i.Item).ToList();
-			return items;
-		}
+		public async Task<List<FoodItem?>> GetItems() {
+            var userSession = _httpContextAccessor.HttpContext.User.GetUserId();
+            return await _context.FavoriteItems.Include(i => i.Item).Where(i => i.UserId == userSession).Select(i => i.Item).ToListAsync();
+        }
 
-		public async Task<FavouriteItem> GetItemById(int id)
-		{
-			var userSession = _httpContextAccessor.HttpContext.User.GetUserId();
-			var item = _context.FavoriteItems.FirstOrDefault(i => i.UserId == userSession && i.ItemId == id);
-			return item;
-		}
+		public async Task<FavouriteItem?> GetItemById(int id) {
+            var userSession = _httpContextAccessor.HttpContext.User.GetUserId();
+			return await _context.FavoriteItems.FirstOrDefaultAsync(i => i.UserId == userSession && i.ItemId == id);
+        } 
 
 		public bool Add(int id)
 		{
-			var userSession = _httpContextAccessor.HttpContext.User.GetUserId();
-			var item = _itemsRepository.GetByIdAsync(id);
+            var userSession = _httpContextAccessor.HttpContext.User.GetUserId();
+            var item = _itemsRepository.GetByIdAsync(id);
 			var fav = new FavouriteItem
 			{
 				UserId = userSession,

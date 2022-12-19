@@ -1,8 +1,11 @@
 ﻿@model EditItemViewModel
 
-<h1>Изменение товара</h1>
+@{
+    ViewData["Title"] = "Редактировать товар";
+}
 
-<div class="row">
+<div class="row py-4">
+    <h1>Изменение товара</h1>
     <div class="col-md-4">
         <form method="post" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -55,7 +58,7 @@
                 <input asp-for="Img" class="form-control" placeholder="Img" />
                 <span asp-validation-for="Img" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
         </form>

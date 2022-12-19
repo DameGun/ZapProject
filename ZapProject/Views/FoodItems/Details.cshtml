@@ -1,9 +1,9 @@
 ﻿@model DetailsViewModel
 
-<div class="container text-center">
+
+<div class="container text-center py-4">
 	<div class="row text-start mb-5">
-		<h3 class="my-3">@Model.Item.Name</h3>
-		<p></p>
+		<h2 class="my-3">@Model.Item.Name</h2>
 	</div>
 	<div class="row">
 		<div class="col-md-8">
@@ -18,14 +18,13 @@
 					@if (Model.Item.Avaliable)
 					{
 						<p class="text-success">&#10003; В наличии</p>
-						<button type="button" class="btn btn-sm btn-outline-secondary">Добавить в корзину</button>
+						<a class="btn btn-sm btn-outline-secondary" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Item.Id">В корзину</a>
 					}
 					else
 					{
 						<p class="text-danger">Нет в наличии</p>
 					}
 				</div>
-
 
 				@if (User.IsInRole("user"))
 				{
@@ -45,5 +44,11 @@
 
 			</div>
 		</div>
+	</div>
+	<div class="row">
+		<h3 class="d-flex my-4">Описание:</h3>
+		<p class="text-start fs-5">
+			@Model.Item.Description
+		</p>
 	</div>
 </div>

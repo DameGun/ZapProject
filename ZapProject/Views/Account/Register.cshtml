@@ -37,9 +37,13 @@
                         <input asp-for="ConfirmPassword" class="form-control" />
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
+                    <div class="my-3">
+                        <a asp-action="Login">Уже имеете аккаунт? Войти сейчас.</a>
+                    </div>
+                    
                     <div class="form-group">
                         <input class="btn btn-outline-success float-right" type="submit" value="Регистрация" />
-                        <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Отмена</a>
+                        <a class="btn btn-outline-danger" asp-controller="Home" asp-action="Index">Отмена</a>
                     </div>
                 </form>
             </div>

@@ -1,16 +1,55 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model HomeViewModel
+
+@{
+	ViewData["Title"] = "ZAP-Project";
 }
 
-<section class="py-5 text-center container">
-    <div class="row py-lg-5">
-        <div class="col-lg-6 col-md-8 mx-auto">
-            <h1 class="fw-light">Магазин спортивного питания</h1>
-            <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-            <p>
-                <a href="#" class="btn btn-primary my-2">Main call to action</a>
-                <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-            </p>
-        </div>
-    </div>
-</section> 
+
+<div class="p-5 text-center">
+	<div class="row py-lg-5 border-bottom box-shadow mb-5">
+		<div class="col-lg-6 col-md-8 mx-auto">
+			<img src="~/img/zap-inc-logo.svg" height="300" />
+			<h2 class="mb-3">Магазин спортивного питания</h2>
+		</div>
+	</div>
+
+	@if (!User.IsInRole("admin") && Model.Items != null)
+	{
+		<div class="row mb-3 text-start">
+			<a class="h3 text-dark text-decoration-none mr-3">Популярные товары</a>
+		</div>
+		<div id="myCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+			<div class="carousel-inner">
+				@{
+					int itemNum = 0;
+					var carouselItemsCount = Math.Ceiling(Model.Items.Count / 3.0);
+					double itemToView = Model.Items.Count;
+					for (int j = 0; j < carouselItemsCount; j++)
+					{
+						<div class="carousel-item @(Model.Items[itemNum] == Model.Items.First() ? "active" : "")">
+							<div class="row">
+								@for (int k = 0; k < (itemToView - 3 >= 0 ? 3 : itemToView); k++, itemNum++)
+								{
+									<partial name="FoodItemLayout" model="Model.Items[itemNum]" />
+								}
+								@if (itemToView - 3 >= 0) itemToView -= 3;
+							</div>
+						</div>
+					}
+				}
+			</div>
+			@if (Model.Items.Count > 3)
+			{
+				<button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon"></span>
+					<span class="visually-hidden">Previous</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+					<span class="carousel-control-next-icon"></span>
+					<span class="visually-hidden">Next</span>
+				</button>
+			}
+		</div>
+	}
+</div>
+

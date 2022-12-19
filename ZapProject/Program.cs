@@ -13,6 +13,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IFoodItems, FoodItemsRepository>();
 builder.Services.AddScoped<IFavItems, FavouriteItemsRepository>();
 builder.Services.AddScoped<IDashboardService, DashboardRepository>();
+builder.Services.AddScoped<IOrdersService, OrdersRepository>();
+builder.Services.AddScoped<IHomeService, HomeRepository>();
+builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -43,6 +46,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 

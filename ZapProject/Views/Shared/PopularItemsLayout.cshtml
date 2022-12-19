@@ -1,0 +1,24 @@
+﻿<div class="col-md-4">
+	<div class="card">
+		<div class="product-thumb">
+			<a asp-area="" asp-controller="FoodItems" asp-action="Details" asp-route-id="@Model.Id"><img src="@Model.Img" /></a>
+		</div>
+		<div class="card-body">
+			<p class="card-text">@Model.Name @String.Format($"{Model.Weight}г")</p>
+			<p class="card-text"><b>@String.Format($"{Model.Price} руб.")</b></p>
+			<div class="d-flex justify-content-between align-items-center">
+				<div class="btn-group">
+					if (User.Identity.IsAuthenticated && User.IsInRole("user"))
+					{
+					<a class="btn btn-sm btn-outline-secondary" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id">В корзину</a>
+					}
+					else if (!User.Identity.IsAuthenticated)
+					{
+					<a class="btn btn-sm btn-outline-secondary" asp-controller="Account" asp-action="Login">В корзину</a>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

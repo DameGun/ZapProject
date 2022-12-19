@@ -21,7 +21,8 @@ namespace ZapProject.Controllers
             _favItems = favItems;
         }
 
-		[HttpGet]
+        [HttpGet]
+        [Route("/FoodItems/Index/{category?}")]
 		public async Task<IActionResult> Index(string? category)
         {
             string currCategory = string.Empty;
@@ -38,16 +39,34 @@ namespace ZapProject.Controllers
                 items = items.Where(i => i.Category.ToString() == currCategory).ToList();
             }
 
-            var itemObj = new FoodItemsViewModel
+            var itemsVM = new FoodItemsViewModel
             {
                 AllItems = items,
                 currCategory = currCategory
             };
 
-            return View(itemObj);
+            return View(itemsVM);
         }
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var allItems = await _itemsRepository.GetAll();
+            var itemsVM = new FoodItemsViewModel();
 
-		[HttpGet]
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                var filteredResultNew = allItems.Where(i => i.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) || 
+                i.Description.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                i.Vendor.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                i.Ingredients.Contains(searchString, StringComparison.OrdinalIgnoreCase));
+
+                itemsVM.AllItems = filteredResultNew;
+                ViewBag.SearchString = searchString;
+                return View("Index", itemsVM);
+            }
+            itemsVM.AllItems = allItems;
+            return View("Index", itemsVM);
+        }
+        [HttpGet]
 		public async Task<IActionResult> Details(int id)
         {
             FoodItem foodItem = await _itemsRepository.GetByIdAsync(id);
@@ -63,18 +82,18 @@ namespace ZapProject.Controllers
                 Item = foodItem,
                 IsFavourite = favCheck,
             };
+
+            ViewData["Title"] = foodItem.Name;
             return View(detailsVM);
         }
-
         [HttpGet]
         public IActionResult Create()
         {
             ViewBag.Categories = new SelectList(_categories.Category, "Id", "Name");
             return View();
         }
-
         [HttpPost]
-        public async Task<IActionResult> Create(CreateItemViewModel foodItem)
+        public IActionResult Create(CreateItemViewModel foodItem)
         {
             if (ModelState.IsValid)
             {
@@ -94,9 +113,8 @@ namespace ZapProject.Controllers
             };
 
             _itemsRepository.Add(item);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Dashboard");
         }
-
 		[HttpGet]
 		public async Task<IActionResult> Edit(int id)
         {
@@ -118,7 +136,6 @@ namespace ZapProject.Controllers
             };
             return View(itemVM);
         }
-
         [HttpPost]
         public async Task<IActionResult> Edit(int id, EditItemViewModel itemVM)
         {
@@ -153,7 +170,6 @@ namespace ZapProject.Controllers
             }
             else return View(itemVM);
         }
-
 		[HttpGet]
 		public async Task<IActionResult> Delete(int id)
         {
@@ -162,7 +178,6 @@ namespace ZapProject.Controllers
             if (foodItem == null) return View("Error");
             return View(foodItem);
         }
-
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteItem(int id)
         {
@@ -177,14 +192,12 @@ namespace ZapProject.Controllers
             _itemsRepository.Delete(foodItem);
             return RedirectToAction("Index");
         }
-
         [HttpPost]
-        public async Task<IActionResult> AddToFavourites(int id)
+        public IActionResult AddToFavourites(int id)
         {
             _favItems.Add(id);
 			return RedirectToAction("Details", new { id });
 		}
-
         [HttpPost]
         public async Task<IActionResult> RemoveFromFavourites(int id)
         {

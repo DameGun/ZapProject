@@ -1,0 +1,52 @@
+﻿@model EditUserProfileViewModel
+
+@{
+    ViewData["Title"] = "Редактировать профиль";
+}
+
+<div class="row">
+    <div class="col-md-6 offset-3">
+        <p>
+            <h4>Редактировать профиль</h4>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form class="pb-3" method="post" asp-action="EditUserProfile">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" value="@Model.Id" name="Id" />
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" class="control-label">Номер телефона</label>
+                        <input asp-for="PhoneNumber" class="form-control" placeholder="PhoneNumber" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <input type="hidden" value="@Model.AddressId" name="AddressId" />
+                    @if (Model.AddressId != null)
+                    {
+                        <input type="hidden" value="@Model.Address.Id" name="Address.Id" />
+                    }
+                    <div class="form-group">
+                        <label asp-for="Address.City" class="control-label">Город</label>
+                        <input asp-for="Address.City" class="form-control" placeholder="City" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address.State" class="control-label">Область</label>
+                        <input asp-for="Address.State" class="form-control" placeholder="State" />
+                        <span asp-validation-for="Address.State" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address.Street" class="control-label">Улица, адрес</label>
+                        <input asp-for="Address.Street" class="form-control" placeholder="Street" />
+                        <span asp-validation-for="Address.Street" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Сохранить" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+        
+    </div>
+</div>
+

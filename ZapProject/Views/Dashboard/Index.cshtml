@@ -3,26 +3,45 @@
 
 @model ZapProject.ViewModels.DashboardViewModel
 
-<div class="album py-5 bg-light">
+@{
+	if (User.IsInRole("admin")) ViewData["Title"] = "Админ-панель";
+	else ViewData["Title"] = "Избранные товары";
+}
+
+
+<div class="album py-4">
 	<div class="container">
-		@if (User.IsInRole("admin"))
-		{
-			<h2 class="display-4 fw-normal">Редактировать товары</h2>
-			<form method="get" asp-area="" asp-controller="FoodItems" asp-action="Create">
-				<button class="btn btn-outline-primary">Добавить товар</button>
-			</form>
-		}
-		else
-		{
-			<h2 class="display-4 fw-normal">Избранные товары</h2>
-		}
+		<div class="row">
+			@if (User.IsInRole("admin"))
+			{
+				<h1>Админ-панель</h1>
+				<form class="my-4" method="get" asp-area="" asp-controller="FoodItems" asp-action="Create">
+					<button class="btn btn-outline-primary">Добавить товар</button>
+				</form>
+			}
+			else
+			{
+			<h1 class="my-3">Избранные товары</h1>
+			}
+		</div>
 
 		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
-			@foreach (var item in Model.UserItems)
+			@if (Model.UserItems.Count == 0)
 			{
-				<partial name="FoodItemLayout" model="item" />
+				<div class="row my-4">
+					<p class="fs-3">У вас нет избранных товаров</p>
+					<div class="col">
+						<a class="btn btn-outline-primary" asp-controller="FoodItems" asp-action="Index">Перейти в каталог</a>
+					</div>
+					
+				</div>
+				
+				
 			}
+			@foreach (var item in Model.UserItems)
+				{
+				<partial name="FoodItemLayout" model="item" />
+				}
 		</div>
 	</div>
 </div>

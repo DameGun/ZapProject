@@ -66,3 +66,18 @@ body {
     align-self:flex-start;
 }
 
+/* Home Page Carousel Controls*/
+
+#myCarousel {
+    margin-left: 70px;
+    margin-right: 70px;
+}
+
+.carousel-control-prev {
+    margin-left: -160px;
+}
+
+.carousel-control-next {
+    margin-right: -160px;
+}
+
