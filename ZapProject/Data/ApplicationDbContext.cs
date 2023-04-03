@@ -13,6 +13,8 @@ namespace ZapProject.Data
 
         }
 
+
+
         public DbSet<FoodItem> FoodItems { get; set; }
 
         public DbSet<Category> Category { get; set; }
